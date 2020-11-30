@@ -15,7 +15,7 @@ for i in range (0,2000,50):
 # Title
 canvas.create_text(WIDTH//2, 40, text="PASSWORD GENERATOR", fill="midnightblue", font = "Times 11 italic bold")
 # configuration
-canvas.create_text(WIDTH//2, 90, text='la longueur', fill='midnightblue', font="Arial 8")
+canvas.create_text(WIDTH//2, 90, text='password length', fill='midnightblue', font="Arial 8")
 canvas.create_line(40, 135, WIDTH-40, 135, fill="midnightblue", width=5)
 lenght = ["6","8","10","12","14","16","18","20"]
 for i in range(len(lenght)):
@@ -39,13 +39,13 @@ for i in range(2):
         canvas.create_line(60+shift, 260+shift2, 60+shift, 208+shift2, fill='midnightblue', width=5)
         canvas.create_text(130+shift, 232+shift2, text=list_of_types[n], anchor=W, fill="midnightblue", font="Arial 8")
     n += 1
-maj = canvas.create_text(70, 208, text='X', anchor=NW, fill='midnightblue', font='Arial 12')
+Maj = canvas.create_text(70, 208, text='X', anchor=NW, fill='midnightblue', font='Arial 12')
 maj_X = 1
-min = canvas.create_text(70, 308, text='X', anchor=NW, fill='midnightblue', font='Arial 12')
+Min = canvas.create_text(70, 308, text='X', anchor=NW, fill='midnightblue', font='Arial 12')
 min_X = 1
-num = canvas.create_text(420, 208, text='X', anchor=NW, fill='midnightblue', font='Arial 12')
+Num = canvas.create_text(420, 208, text='X', anchor=NW, fill='midnightblue', font='Arial 12')
 num_X = 1
-sym = canvas.create_text(420, 308, text='X', anchor=NW, fill='midnightblue', font='Arial 12')
+Sym = canvas.create_text(420, 308, text='X', anchor=NW, fill='midnightblue', font='Arial 12')
 sym_X = 1
 
 canvas.create_line(WIDTH//2-150, 410, WIDTH//2+150, 410, fill='midnightblue', width=5)
@@ -53,6 +53,7 @@ canvas.create_line(WIDTH//2+150, 408, WIDTH//2+150, 510, fill='midnightblue', wi
 canvas.create_line(WIDTH//2-150, 510, WIDTH//2+152, 510, fill='midnightblue', width=5)
 canvas.create_line(WIDTH//2-150, 510, WIDTH//2-150, 408, fill='midnightblue', width=5)
 canvas.create_text(WIDTH//2, 460, text='GENERATE', fill='midnightblue', font="Arial 8")
+text_field = canvas.create_text(WIDTH//2, 0, text='', fill='midnightblue', font="Arial 8")
 
 canvas.pack()
 
@@ -68,35 +69,37 @@ def click(event):
     else:
         if event.x < 300 and event.y < 250:
             if maj_X == 1:
-                canvas.itemconfig(maj, text='')
+                canvas.itemconfig(Maj, text='')
                 maj_X = 0
             else:
-                canvas.insert(maj, 12, 'X')
+                canvas.insert(Maj, 12, 'X')
                 maj_X = 1
         elif event.x < 300 and event.y > 250 and event.y < 350:
             if min_X == 1:
-                canvas.itemconfig(min, text='')
+                canvas.itemconfig(Min, text='')
                 min_X = 0
             else:
-                canvas.insert(min, 12, 'X')
+                canvas.insert(Min, 12, 'X')
                 min_X = 1
         elif event.x < 500 and event.y < 250:
             if num_X == 1:
-                canvas.itemconfig(num, text='')
+                canvas.itemconfig(Num, text='')
                 num_X = 0
             else:
-                canvas.insert(num, 12, 'X')
+                canvas.insert(Num, 12, 'X')
                 num_X = 1
         elif event.x < 500 and event.y > 250 and event.y < 350:
             if sym_X == 1:
-                canvas.itemconfig(sym, text='')
+                canvas.itemconfig(Sym, text='')
                 sym_X = 0
             else:
-                canvas.insert(sym, 12, 'X')
+                canvas.insert(Sym, 12, 'X')
                 sym_X = 1
         elif event.y > 400 and event.y < 520 and event.x > WIDTH//2-150 and event.x < WIDTH//2+150:
+            canvas.delete(text_field)
             verify()
             generate()
+            result()
 
 list_of_symbols = {'majuscules':'ABCDEFGHIJKLMNOPQRSTUVWXYZ','minuscules':'abcdefghijklmnopqrstuvwxyz','numbers':'1234567890','symbols':'@#€_&-+()/*:;!?$=~[]{}\°%,.'}
 list_output, check = [],[]
@@ -108,10 +111,7 @@ def generate():
         output = ''
         for i in range (password_lenght):
             output = output + ''.join(random.choice(list_of_symbols.get(random.choice(check))))
-            list_output.append(output)
-            mv = 50*j
-            text_field=canvas.create_text(WIDTH//2, 584+mv, text='', fill='midnightblue', font="Arial 8")
-            canvas.insert(text_field, 12, list_output[j])
+        list_output.append(output)
 
 def verify():
     global check, password_lenght, lenght
@@ -125,6 +125,15 @@ def verify():
         if num_X == 1: check.append(list_of_types[2])
         if sym_X == 1: check.append(list_of_types[3])
         if check == []: check = list_of_types
+
+def result():
+    global list_output
+    i = 0
+    for member in list_output:
+        mv = 25*i
+        text_field = canvas.create_text(WIDTH//2, 584+mv, text=member, fill='midnightblue', font="Arial 8")
+        i += 1
+        
 
 canvas.bind('<1>', click)
 
