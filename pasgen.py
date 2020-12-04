@@ -135,9 +135,10 @@ def click(event):
 def generate():
     global check, password_lenght, lenght, list_output
     for j in range (10):
-        output = ''
-        for i in range (password_lenght):
-            output = output + ''.join(random.choice(list_of_symbols.get(random.choice(check))))
+        output,sym = '',""
+        while len(output) < password_lenght:
+            sym = random.choice(list_of_symbols.get(random.choice(check)))
+            if sym not in output: output = output + sym
         list_output.append(output)
 
 def verify():
